@@ -1,50 +1,55 @@
-# PUB Library Management System
+# PUB Library Management System - Android App
 
-![Library Management System](https://via.placeholder.com/800x400?text=Library+Management+System)  
-*(Replace the placeholder image with an actual screenshot of your app)*
+![Project Screenshot](https://via.placeholder.com/800x400)
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Steps to Run Locally](#steps-to-run-locally)
+- [Usage](#usage)
+  - [Login/Register](#loginregister)
+  - [Dashboard Navigation](#dashboard-navigation)
+  - [Borrowing and Renewing Books](#borrowing-and-renewing-books)
+- [Code Structure](#code-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
 ## Overview
+The **PUB Library Management System** is an Android-based application designed to simplify library operations and improve the user experience. It offers features like book searching, borrowing, renewing, and fine tracking—all within a native mobile environment.
 
-The **PUB Library Management System** is a web-based application designed to help users manage and interact with a digital library. It provides features such as user authentication, book search, borrowing books, renewing borrowed books, and viewing all available books. The system is built to be user-friendly, responsive, and efficient for both desktop and mobile devices.
-
-This project is ideal for educational institutions, libraries, or anyone looking to implement a simple yet powerful library management solution.
-
----
+This app is designed for educational institutions, libraries, or anyone interested in implementing a library management system on Android.
 
 ## Features
-
+### Core Functionality
 - **User Authentication**
-  - Login with username and password.
-  - Register new accounts.
+  - Secure login and registration system with username and password.
+  - User registration with validation for unique usernames.
 - **Book Search**
-  - Search books by title or author.
-  - Check book availability.
+  - Search books by title, author, or ISBN.
+  - Check book availability in real-time.
 - **Borrow Books**
   - Borrow available books with a due date set for 14 days.
 - **Renew Books**
-  - Renew borrowed books individually or all at once.
-  - Extend due dates by 14 days.
+  - Renew borrowed books and extend their due date by 14 days.
 - **Fine Calculation**
   - Calculate fines for overdue books (10 units per day).
 - **Dashboard Navigation**
   - Access different sections: Search Books, My Borrowed Books, and Book List.
-- **Responsive Design**
-  - Optimized for various screen sizes and orientations.
-
----
+- **Responsive UI**
+  - Optimized for both phones and tablets with clean, user-friendly design.
 
 ## Installation
-
 ### Prerequisites
-
 Before you begin, ensure you have the following installed:
-- A modern web browser (e.g., Chrome, Firefox, Edge)
-- A text editor or IDE (e.g., VS Code, Sublime Text)
-- Basic knowledge of HTML, CSS, and JavaScript
+- **Android Studio** (Latest version)
+- **Java SDK** (Version 8 or above)
+- **Basic knowledge of Android development** (XML, Java/Kotlin)
 
 ### Steps to Run Locally
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/yourusername/pub-library-management-system.git
-   cd pub-library-management-system
+#### Clone the Repository
+```bash
+git clone https://github.com/yourusername/pub-library-management-system-android.git
+cd pub-library-management-system-android
