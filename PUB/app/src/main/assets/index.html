@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> PUB Library Management System</title>
+    <style>
+        /* Updated CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Login/Registration Form */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        .auth-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #5ae248;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #166fe5;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #52e03f;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .menu-item {
+            padding: 10px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .menu-item:hover {
+            background: #f0f2f5;
+            border-radius: 4px;
+        }
+
+        /* Book Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f8f9fa;
+        }
+
+        .renew-btn {
+            background: #42b72a;
+            padding: 5px 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .renew-btn:hover {
+            background: #36a420;
+        }
+
+        .logout-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+        }
+        /* Mobile-friendly adjustments */
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .auth-form {
+        width: 90%;
+        padding: 20px;
+    }
+
+    /* Dashboard Adjustments */
+    .main-content {
+        padding: 15px;
+        margin-left: 0;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* Sidebar Mobile */
+    .sidebar {
+        width: 200px;
+        padding: 15px;
+        left: -200px;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .menu-item {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* Form Elements */
+    input {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    /* Search Input */
+    #searchInput {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    /* Table Buttons */
+    .renew-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Hide desktop-only elements */
+    .logout-btn {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        margin-top: 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .auth-form {
+        width: 95%;
+        padding: 15px;
+    }
+
+    th, td {
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+    </style>
+</head>
+<body>
+<!-- Login/Registration -->
+<div class="auth-container" id="authContainer">
+    <div class="auth-form" id="loginForm">
+        <h2>PUB Member Login</h2>
+        <form onsubmit="return login(event)">
+            <div class="form-group">
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 15px;">
+            Don't have an account? <a href="#" onclick="showRegister()">Register</a>
+        </p>
+    </div>
+
+    <div class="auth-form" id="registerForm" style="display: none;">
+        <h2>Member Registration</h2>
+        <form onsubmit="return register(event)">
+            <div class="form-group">
+                <input type="text" id="regName" placeholder="Full Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="regEmail" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="regUsername" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="regPassword" placeholder="Password" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <p style="text-align: center; margin-top: 15px;">
+            Already have an account? <a href="#" onclick="showLogin()">Login</a>
+        </p>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dashboard" id="dashboard">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar">
+        <h2>Library Portal</h2>
+        <div class="menu-item" onclick="showSection('searchBooks')">Search Books</div>
+        <div class="menu-item" onclick="showSection('myBooks')">My Borrowed Books</div>
+        <div class="menu-item" onclick="showSection('bookList')">Book List</div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="main-content">
+        <!-- Search Books -->
+        <div id="searchBooks" class="section">
+            <h3>Search Books</h3>
+            <input type="text" id="searchInput" placeholder="Search by book title or author"
+                   style="width: 300px; padding: 8px;" onkeyup="searchBooks()">
+            <table id="searchResults">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Availability</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- My Borrowed Books -->
+        <div id="myBooks" class="section" style="display: none;">
+            <h3>My Borrowed Books</h3>
+            <table id="borrowedBooks">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Due Date</th>
+                    <th>Fine</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Renew Books -->
+        <div id="renewBooks" class="section" style="display: none;">
+            <h3>Renew Books</h3>
+            <table id="renewalTable">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Current Due Date</th>
+                    <th>New Due Date</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button onclick="renewAllBooks()">Renew All Books</button>
+        </div>
+
+        <!-- Book List -->
+        <div id="bookList" class="section" style="display: none;">
+            <h3>All Books</h3>
+            <table id="allBooks">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<Script>
+    // Data Storage
+let users = [
+    { username: "arafat", password: "12345678" },
+    { username: "pub", password: "pub" }
+];
+
+let books = [
+    { "id": 1, "title": "Artificial Intelligence: A Modern Approach", "author": "Stuart Russell, Peter Norvig", "isbn": "9780136042594", "available": true },
+    { "id": 2, "title": "Deep Learning", "author": "Ian Goodfellow, Yoshua Bengio, Aaron Courville", "isbn": "9780262035613", "available": true },
+    { "id": 3, "title": "Machine Learning Yearning", "author": "Andrew Ng", "isbn": "9781999579500", "available": true },
+    { "id": 4, "title": "Pattern Recognition and Machine Learning", "author": "Christopher Bishop", "isbn": "9780387310732", "available": true },
+    { "id": 5, "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow", "author": "Aurélien Géron", "isbn": "9781492032649", "available": true },
+    { "id": 6, "title": "Python Machine Learning", "author": "Sebastian Raschka", "isbn": "9781800567700", "available": true },
+    { "id": 7, "title": "AI Superpowers", "author": "Kai-Fu Lee", "isbn": "9781328546395", "available": true },
+    { "id": 8, "title": "The Hundred-Page Machine Learning Book", "author": "Andriy Burkov", "isbn": "9781999579500", "available": true },
+    { "id": 9, "title": "Neural Networks and Deep Learning", "author": "Michael Nielsen", "isbn": "9781999579500", "available": true },
+    { "id": 10, "title": "Reinforcement Learning: An Introduction", "author": "Richard S. Sutton, Andrew G. Barto", "isbn": "9780262039246", "available": true },
+
+    { "id": 11, "title": "The Web Application Hacker's Handbook", "author": "Dafydd Stuttard, Marcus Pinto", "isbn": "9781118026476", "available": true },
+    { "id": 12, "title": "Cybersecurity and Cyberwar: What Everyone Needs to Know", "author": "P.W. Singer, Allan Friedman", "isbn": "9780199918096", "available": true },
+    { "id": 13, "title": "Hacking: The Art of Exploitation", "author": "Jon Erickson", "isbn": "9781593271440", "available": true },
+    { "id": 14, "title": "Security Engineering: A Guide to Building Dependable Distributed Systems", "author": "Ross J. Anderson", "isbn": "9780470068526", "available": true },
+    { "id": 15, "title": "Black Hat Python", "author": "Justin Seitz", "isbn": "9781593274298", "available": true },
+    { "id": 16, "title": "Cryptography and Network Security", "author": "William Stallings", "isbn": "9780134444284", "available": true },
+    { "id": 17, "title": "Metasploit: The Penetration Tester’s Guide", "author": "David Kennedy, Jim O’Gorman, Devon Kearns", "isbn": "9781593272881", "available": true },
+    { "id": 18, "title": "The Art of Software Security Assessment", "author": "Mark Dowd, John McDonald, Justin Schuh", "isbn": "9780321442783", "available": true },
+    { "id": 19, "title": "Practical Malware Analysis", "author": "Michael Sikorski, Andrew Honig", "isbn": "9781593272904", "available": true },
+    { "id": 20, "title": "Gray Hat Hacking", "author": "Daniel Regalado, Shon Harris", "isbn": "9780071815851", "available": true },
+
+    { "id": 21, "title": "Clean Code: A Handbook of Agile Software Craftsmanship", "author": "Robert C. Martin", "isbn": "9780132350884", "available": true },
+    { "id": 22, "title": "The Pragmatic Programmer", "author": "Andrew Hunt, David Thomas", "isbn": "9780201616224", "available": true },
+    { "id": 23, "title": "Design Patterns: Elements of Reusable Object-Oriented Software", "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides", "isbn": "9780201633610", "available": true },
+    { "id": 24, "title": "Refactoring: Improving the Design of Existing Code", "author": "Martin Fowler", "isbn": "9780201485677", "available": true },
+    { "id": 25, "title": "Introduction to Algorithms", "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein", "isbn": "9780262033848", "available": true },
+    { "id": 26, "title": "JavaScript: The Good Parts", "author": "Douglas Crockford", "isbn": "9780596517748", "available": true },
+    { "id": 27, "title": "Design Patterns in Java", "author": "Steven John Metsker", "isbn": "9780321173882", "available": true },
+    { "id": 28, "title": "Clean Architecture: A Craftsman's Guide to Software Structure and Design", "author": "Robert C. Martin", "isbn": "9780134494165", "available": true },
+    { "id": 29, "title": "The Mythical Man-Month: Essays on Software Engineering", "author": "Frederick P. Brooks Jr.", "isbn": "9780201835953", "available": true },
+    { "id": 30, "title": "The Complete Software Developer's Career Guide", "author": "John Sonmez", "isbn": "9781617292823", "available": true },
+
+    { "id": 31, "title": "Operating System Concepts", "author": "Abraham Silberschatz, Peter Baer Galvin, Greg Gagne", "isbn": "9781118063334", "available": true },
+    { "id": 32, "title": "Computer Networks", "author": "Andrew S. Tanenbaum, David J. Wetherall", "isbn": "9780133594140", "available": true },
+    { "id": 33, "title": "Algorithms", "author": "Robert Sedgewick, Kevin Wayne", "isbn": "9780321573513", "available": true },
+    { "id": 34, "title": "Computer Architecture: A Quantitative Approach", "author": "John L. Hennessy, David A. Patterson", "isbn": "9780123744797", "available": true },
+    { "id": 35, "title": "The Art of Computer Programming", "author": "Donald E. Knuth", "isbn": "9780321751041", "available": true },
+    { "id": 36, "title": "Database System Concepts", "author": "Abraham Silberschatz, Henry F. Korth, S. Sudarshan", "isbn": "9780078022159", "available": true },
+    { "id": 37, "title": "Artificial Intelligence: Structures and Strategies for Solving Complex Problems", "author": "George F. Luger", "isbn": "9780321452485", "available": true },
+    { "id": 38, "title": "Introduction to the Theory of Computation", "author": "Michael Sipser", "isbn": "9781133187790", "available": true },
+    { "id": 39, "title": "Discrete Mathematics and Its Applications", "author": "Kenneth H. Rosen", "isbn": "9780073383095", "available": true },
+    { "id": 40, "title": "Automata and Computability", "author": "Dexter C. Kozen", "isbn": "9781441940049", "available": true },
+
+    { "id": 41, "title": "Python Crash Course", "author": "Eric Matthes", "isbn": "9781593279288", "available": true },
+    { "id": 42, "title": "The C Programming Language", "author": "Brian W. Kernighan, Dennis M. Ritchie", "isbn": "9780131103627", "available": true },
+    { "id": 43, "title": "Java: The Complete Reference", "author": "Herbert Schildt", "isbn": "9781260440232", "available": true },
+    { "id": 44, "title": "C++ Primer", "author": "Stanley B. Lippman, Josée Lajoie, Barbara E. Moo", "isbn": "9780321714115", "available": true },
+    { "id": 45, "title": "Learning JavaScript Design Patterns", "author": "Addy Osmani", "isbn": "9781449331818", "available": true },
+    { "id": 46, "title": "Web Development with Node and Express", "author": "Ethan Brown", "isbn": "9781492053507", "available": true },
+    { "id": 47, "title": "Ruby on Rails Tutorial", "author": "Michael Hartl", "isbn": "9780135264027", "available": true },
+    { "id": 48, "title": "Flask Web Development", "author": "Miguel Grinberg", "isbn": "9781449372620", "available": true },
+    { "id": 49, "title": "JavaScript: The Definitive Guide", "author": "David Flanagan", "isbn": "9780596805524", "available": true },
+    { "id": 50, "title": "Learning PHP, MySQL & JavaScript", "author": "Robin Nixon", "isbn": "9781491905163", "available": true },
+
+    // Additional books continue in the same format up to 100
+];
+
+let borrowedBooks = [];
+let currentUser = null;
+
+// Authentication Functions
+function showRegister() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+}
+
+function showLogin() {
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+}
+
+function login(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        currentUser = user;
+        document.getElementById('authContainer').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadDashboard();
+    } else {
+        alert('Invalid credentials!');
+    }
+}
+
+function register(e) {
+    e.preventDefault();
+    const newUser = {
+        name: document.getElementById('regName').value,
+        email: document.getElementById('regEmail').value,
+        username: document.getElementById('regUsername').value,
+        password: document.getElementById('regPassword').value
+    };
+
+    if (users.some(u => u.username === newUser.username)) {
+        alert('Username already exists!');
+        return;
+    }
+
+    users.push(newUser);
+    alert('Registration successful!');
+    showLogin();
+}
+
+function logout() {
+    currentUser = null;
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('authContainer').style.display = 'flex';
+}
+
+// Dashboard Functions
+function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(div => div.style.display = 'none');
+    document.getElementById(sectionId).style.display = 'block';
+    if (sectionId === 'searchBooks') searchBooks();
+}
+
+function loadDashboard() {
+    // Load all books
+    const bookListTbody = document.querySelector('#allBooks tbody');
+    bookListTbody.innerHTML = books.map(book => `
+        <tr>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.available ? 'Available' : 'Checked Out'}</td>
+            <td>
+                ${book.available ?
+                    `<button onclick="borrowBook(${book.id})">Borrow</button>` :
+                    'Not Available'}
+            </td>
+        </tr>
+    `).join('');
+
+    // Load borrowed books
+    const userBooks = borrowedBooks.filter(b => b.user === currentUser.username);
+    const tbody = document.querySelector('#borrowedBooks tbody');
+    tbody.innerHTML = userBooks.map(book => `
+        <tr>
+            <td>${book.title}</td>
+            <td>${book.dueDate}</td>
+            <td>৳${calculateFine(book.dueDate)}</td>
+            <td>
+                <button class="renew-btn" onclick="renewBook('${book.title}')">Renew</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function calculateFine(dueDate) {
+    const today = new Date();
+    const due = new Date(dueDate);
+    const diff = Math.ceil((today - due) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff * 10 : 0;
+}
+
+function renewBook(title) {
+    const book = borrowedBooks.find(b => b.title === title && b.user === currentUser.username);
+    if (book) {
+        const newDueDate = renewDueDate(book.dueDate);
+        book.dueDate = newDueDate;
+        loadDashboard();
+    }
+}
+function renewBook(title) {
+    const book = borrowedBooks.find(b => b.title === title && b.user === currentUser.username);
+    if (book) {
+        const newDueDate = renewDueDate(book.dueDate);
+        book.dueDate = newDueDate;
+        loadDashboard();
+    }
+}
+
+function renewDueDate(dueDate) {
+    const due = new Date(dueDate);
+    due.setDate(due.getDate() + 14);
+    return due.toISOString().split('T')[0];
+}
+
+function renewAllBooks() {
+    borrowedBooks.filter(b => b.user === currentUser.username).forEach(book => {
+        book.dueDate = renewDueDate(book.dueDate);
+    });
+    loadDashboard();
+}
+
+
+function renewDueDate(dueDate) {
+    const due = new Date(dueDate);
+    due.setDate(due.getDate() + 14);
+    return due.toISOString().split('T')[0];
+}
+
+function borrowBook(bookId) {
+    const book = books.find(b => b.id === bookId);
+    if (book && book.available) {
+        book.available = false;
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 14);
+
+        borrowedBooks.push({
+            user: currentUser.username,
+            title: book.title,
+            dueDate: dueDate.toISOString().split('T')[0]
+        });
+        loadDashboard();
+        searchBooks();
+    }
+}
+
+// Search Books
+function searchBooks() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const results = books.filter(book =>
+        book.title.toLowerCase().includes(query) ||
+        book.author.toLowerCase().includes(query)
+    );
+
+    const tbody = document.querySelector('#searchResults tbody');
+    tbody.innerHTML = results.map(book => `
+        <tr>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.available ? 'Available' : 'Checked Out'}</td>
+            <td>
+                ${book.available ?
+                    `<button onclick="borrowBook(${book.id})">Borrow</button>` :
+                    'Not Available'}
+            </td>
+        </tr>
+    `).join('');
+}
+// Toggle Sidebar
+function toggleSidebar() {
+    document.querySelector('.sidebar').classList.toggle('active');
+}
+
+</Script>
+</body>
+</html>
