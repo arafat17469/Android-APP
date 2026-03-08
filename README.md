@@ -18,7 +18,7 @@
 - [Acknowledgments](#acknowledgments)
 
 ## Overview
-The **PUB Library Management System** is an Android-based application designed to simplify library operations and improve the user experience. It offers features like book searching, borrowing, renewing, and fine tracking—all within a native mobile environment.
+The **PUB Library Management System** is an Android-based application designed to simplify library operations and improve the user experience. It offers features like book searching, borrowing, renewing, and fine tracking—all within a native mobile environment..
 
 This app is designed for educational institutions, libraries, or anyone interested in implementing a library management system on Android.
 
