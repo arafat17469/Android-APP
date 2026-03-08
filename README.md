@@ -44,7 +44,7 @@ This app is designed for educational institutions, libraries, or anyone interest
 ## Installation
 ### Prerequisites
 Before you begin, ensure you have the following installed:
-- **Android Studio** (Latest version)
+- **Android Studio** (Latest version.)
 - **Java SDK** (Version 8 or above)
 - **Basic knowledge of Android development** (XML, Java/Kotlin)
 
